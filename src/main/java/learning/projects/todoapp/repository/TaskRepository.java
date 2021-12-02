@@ -1,26 +1,21 @@
 package learning.projects.todoapp.repository;
 
 import learning.projects.todoapp.model.Task;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.List;
+import java.util.Optional;
 
+public interface TaskRepository {
+    List<Task> findAll();
 
-@RepositoryRestResource
-public interface TaskRepository extends JpaRepository<Task, Long> {
+    Optional<Task> findById(Long id);
 
-    @Override
-    @RestResource(exported = false)
-    void deleteById(Long id);
+    Task save(Task entity);
 
-    @Override
-    @RestResource(exported = false)
-    void delete(Task task);
+    Page<Task> findAll(Pageable pageable);
 
-    @RestResource(path = "done", rel = "done")
-    List<Task> findAllByDone(@Param("state") boolean done);
-
+    List<Task> findByDone(@Param("state") boolean done);
 }
